@@ -1,15 +1,11 @@
 <?php
 
-use App\Models\Alternatif;
-use Illuminate\Support\Carbon;
-use App\Models\Stok;
-use App\Models\Inclusion;
-use App\Models\Expending;
-use App\Models\Kriteria;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\ANP;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EmployerController;
+use App\Models\Employer;
 use Illuminate\Support\Facades\Route;
-
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,130 +18,44 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
-    Route::get('/', function () {
-        if (Auth::user()->hasRole(['admin', 'karyawan'])) {
-            $outcome = Expending::selectRaw("JSON_EXTRACT(stok_data, '$.hrg_jual') * jumlah as outcome_price, jumlah")
-                ->whereYear('expendings.created_at', '=', Carbon::now()->year)
-                ->whereMonth('expendings.created_at', '=', Carbon::now()->month)
-                ->get();
+Route::middleware('auth')->group(function () {
 
-            $income = Inclusion::selectRaw("JSON_EXTRACT(stok_data, '$.hrg_jual') * jumlah as income_price, jumlah")
-                ->whereYear('created_at', '=', Carbon::now()->year)
-                ->whereMonth('created_at', '=', Carbon::now()->month)
-                ->get();
+    Route::get(
+        '/',
+        function () {
+            // return Inertia::render('Welcome', [
+            //     'canLogin' => Route::has('login'),
+            //     'canRegister' => Route::has('register'),
+            //     'laravelVersion' => Application::VERSION,
+            //     'phpVersion' => PHP_VERSION,
+            // ]);
 
-            return view('dashboard.index', [
-                'title' => 'Dashboard',
-                'total' => Stok::all()->sum('stok'),
-                'keluar' => $income->sum('jumlah'),
-                'masuk' => $outcome->sum('jumlah'),
-                'pengeluaran' => $outcome->sum('outcome_price'),
-                'pendapatan' => $income->sum('income_price'),
-            ]);
-        } else if (Auth::user()->hasRole('pemasok')) {
-            return view('dashboard.jumbotron', [
-                'title' => 'Selamat Datang di ' . config('app.name', 'Laravel')
-            ]);
-        } else {
-            return view('dashboard.waiting', [
-                'title' => 'Selamat Datang di ' . config('app.name', 'Laravel')
+            return redirect(route('dashboard'));
+        }
+    );
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/dashboard', [EmployerController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/new', [EmployerController::class, 'create'])->name('dashboard.new');
+    Route::post('/dashboard/new', [EmployerController::class, 'store'])->name('dashboard.new');
+    Route::get('/dashboard/{id}', [EmployerController::class, 'edit'])->name('dashboard.edit');
+    Route::post('/dashboard/{id}', [EmployerController::class, 'update'])->name('dashboard.edit');
+    Route::delete('/dashboard/{id}', [EmployerController::class, 'destroy'])->name('dashboard.delete');
+
+    Route::get(
+        '/employe',
+        function (Request $request) {
+            return Inertia::render('Employer/FormWP', [
+                'title' => 'WP Karyawan',
+                'employers' => Employer::selectRaw('nama, kinerja, ketepatan_waktu, komunikasi, kreatifitas, kehadiran')->orderBy('created_at', 'desc')->get(),
+                'status' => session('status'),
             ]);
         }
-    })->name('dashboard');
+    )->name('employe');
 
-    Route::group(['middleware' => ['role:admin']], function () {
-        Route::get('/pengguna', fn () => view('dashboard.user', ['title' => 'Pengguna']))->name('pengguna.index');
-        Route::get('/stok', fn () => view('dashboard.stok', ['title' => 'Stok']))->name('stok.index');
-        Route::get('/status', fn () => view('dashboard.status', ['title' => 'Status Pengiriman']))->name('status.index');
-
-        Route::get('/verify', fn () => view('dashboard.verify', ['title' => 'Daftar Verifikasi Akun']))->name('verify.index');
-        Route::get('/kriteria', fn () => view('dashboard.kriteria', ['title' => 'Daftar Kriteria']))->name('kriteria.index');
-        Route::get('/alternatif', fn () => view('dashboard.alternatif', ['title' => 'Daftar Alternatif']))->name('alternatif.index');
-
-        Route::get('/weighted', function () {
-            return view('dashboard.weighted', [
-                'title' => 'Perhitungan WP',
-                'alternatif' => Alternatif::selectRaw("alternatifs.k_value, stoks.nama as stoks_nama")
-                    ->join('stoks', 'alternatifs.stok_id', '=', 'stoks.id')
-                    ->orderBy('alternatifs.created_at')
-                    ->get(),
-                'kriteria' => Kriteria::select()->orderBy('kriterias.created_at')->get()
-            ]);
-        })->name('weighted.index');
-    });
-
-    Route::group(['middleware' => ['role:admin|karyawan']], function () {
-        Route::get('/terjual', fn () => view('dashboard.inclusion', ['title' => 'Stok Keluar']))->name('terjual.index');
-    });
-
-    Route::group(['middleware' => ['role:admin|pemasok']], function () {
-        Route::get('/tertunda', fn () => view('dashboard.expending', ['title' => 'Permintaan Supply']))->name('tertunda.index');
-    });
 });
 
-Route::get('/testing', function () {
-    $alternatif = Alternatif::selectRaw("alternatifs.k_value, stoks.nama as stoks_nama")
-        ->join('stoks', 'alternatifs.stok_id', '=', 'stoks.id')
-        ->orderBy('alternatifs.created_at')
-        ->get();
-
-    $kriteria = Kriteria::select()->orderBy('kriterias.created_at')->get();
-
-    $k = $kriteria->count();
-    $a = $alternatif->count();
-
-    $tkep = 0;
-    $tbkep = 0;
-
-    for ($i = 0; $i < $k; $i++) {
-        $tkep = $tkep + $kriteria[$i]->kepentingan;
-    }
-
-    for ($i = 0; $i < $k; $i++) {
-        $bkep[$i] = ($kriteria[$i]->kepentingan / $tkep);
-        $tbkep = $tbkep + $bkep[$i];
-    }
-
-    for ($i = 0; $i < $k; $i++) {
-        if ($kriteria[$i]->tipe == "cost") {
-            $pangkat[$i] = (-1) * $bkep[$i];
-        } else {
-            $pangkat[$i] = $bkep[$i];
-        }
-    }
-
-    for ($i = 0; $i < $a; $i++) {
-        for ($j = 0; $j < $k; $j++) {
-            $s[$i][$j] = pow(($alternatif[$i]['k_value'][$j]), $pangkat[$j]);
-        }
-        $ss[$i] = $s[$i][0] * $s[$i][1] * $s[$i][2] * $s[$i][3] * $s[$i][4];
-    }
-
-    echo "<b>Hasil Akhir</b></br>";
-    echo "<table class='table table-striped table-bordered table-hover'>";
-    echo "<thead><tr><th>Alternatif</th><th>V</th></tr></thead>";
-    $total = 0;
-    for ($i = 0; $i < $a; $i++) {
-        $total = $total + $ss[$i];
-    }
-    for ($i = 0; $i < $a; $i++) {
-        echo "<tr><td><b>" . $alternatif[$i]['stoks_nama'] . "</b></td>";
-        $v[$i] = round($ss[$i] / $total, 6);
-        echo "<td>" . $v[$i] . "</td></tr>";
-    }
-    echo "</table><hr>";
-
-    // dd(key($alternatif->map(fn ($x) => $x['stoks_nama'])));
-    // $arl2 = key($alternatif->map(fn ($x) => $x['stoks_nama'])) + 1;
-
-    // uasort($v, 'cmp');
-    // for ($i = 0; $i < $arl2; $i++) { //new for 8 lines below
-    //     if ($i == 0)
-    //         echo "<div class='alert alert-dismissible alert-info'><b><i>Dari tabel tersebut dapat disimpulkan bahwa " . $alt_name[array_search((end($v)), $v)] . " mempunyai hasil paling tinggi, yaitu " . current($v);
-    //     elseif ($i == ($arl2 - 1))
-    //         echo "</br>Dan terakhir " . $alt_name[array_search((prev($v)), $v)] . " dengan nilai " . current($v) . ".</i></b></div>";
-    //     else
-    //         echo "</br>Lalu diikuti dengan " . $alt_name[array_search((prev($v)), $v)] . " dengan nilai " . current($v);
-    // }
-});
+require __DIR__ . '/auth.php';

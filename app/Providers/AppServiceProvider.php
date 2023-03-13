@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,25 +27,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $charts->register([
-        //     \App\Charts\EarningChart::class
-        // ]);
+        Schema::defaultStringLength(191);
 
-        \Illuminate\Support\Collection::macro('recursive', function () {
-            return $this->whenNotEmpty($recursive = function ($item) use (&$recursive) {
-                if (is_array($item)) {
-                    return $recursive(new static($item));
-                } elseif ($item instanceof \Illuminate\Support\Collection) {
-                    $item->transform(static function ($collection, $key) use ($recursive, $item) {
-                        return $item->{$key} = $recursive($collection);
-                    });
-                } elseif (is_object($item)) {
-                    foreach ($item as $key => &$val) {
-                        $item->{$key} = $recursive($val);
-                    }
-                }
-                return $item;
-            });
-        });
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
+        if (!Storage::exists('images')) {
+            Storage::makeDirectory('public/images');
+        }
     }
 }
