@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useRef } from "react";
 
 export default forwardRef(function RangeInput(
-    { name, id, value, className, min, max, step, handleChange },
+    { name, id, value, className, min, max, step, handleChange, disabled = false },
     ref
 ) {
     const input = ref ? ref : useRef();
@@ -14,6 +14,7 @@ export default forwardRef(function RangeInput(
         <div className="flex flex-col items-start">
             <input
                 type="range"
+                disabled={disabled}
                 name={name}
                 id={id}
                 className={
@@ -25,7 +26,15 @@ export default forwardRef(function RangeInput(
                 max={max}
                 step={step}
                 value={value}
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => {
+                    return handleChange({
+                        target: {
+                            name: e.target.name,
+                            type: "range",
+                            value: parseFloat(e.target.value),
+                        },
+                    });
+                }}
             />
         </div>
     );
