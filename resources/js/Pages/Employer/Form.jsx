@@ -320,7 +320,7 @@ export default function Form({
                                     <div className="basis-6/12">
                                         <InputLabel
                                             forInput="jenis_kelamin"
-                                            value="Nama Penyidik"
+                                            value="Jenis Kelamin"
                                         />
 
                                         <SelectInput
