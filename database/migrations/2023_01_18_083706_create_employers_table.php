@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('employers', function (Blueprint $table) {
             $table->id();
-            $table->string('nik');
+            $table->string('nik', 8);
             $table->string('nama', 25);
             $table->string('p_area', 25);
             $table->string('personnel_subarea', 25);
