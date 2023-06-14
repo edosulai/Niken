@@ -21,12 +21,12 @@ return new class extends Migration {
             $table->string('bagian', 40);
             $table->string('job_group', 25);
             $table->string('posisi_kerja', 50);
-            $table->string('status', 25);
+            // $table->string('status', 25);
             $table->enum('jenis_kelamin', ['Male', 'Female']);
             $table->string('edu_establishment', 25);
             $table->date('tgl_lahir');
             $table->date('tgl_masuk');
-            $table->integer('jarak_alamat');
+            // $table->integer('jarak_alamat');
             $table->integer('kinerja');
             $table->integer('ketepatan_waktu');
             $table->integer('komunikasi');

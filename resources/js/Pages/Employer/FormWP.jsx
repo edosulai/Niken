@@ -15,9 +15,8 @@ export default function Form({ auth, status, title, employers, asset_url }) {
 
     const leftChild = ({ isChecked }) => (
         <span
-            className={`flex rounded py-1 px-4 text-sm font-medium ${
-                isChecked ? `bg-gray-500 text-gray-100` : ``
-            }`}
+            className={`flex rounded py-1 px-4 text-sm font-medium ${isChecked ? `bg-gray-500 text-gray-100` : ``
+                }`}
         >
             Cost
         </span>
@@ -25,24 +24,23 @@ export default function Form({ auth, status, title, employers, asset_url }) {
 
     const rightChild = ({ isChecked }) => (
         <span
-            className={`flex rounded py-1 px-4 text-sm font-medium ${
-                isChecked ? `` : `bg-gray-500 text-gray-100`
-            }`}
+            className={`flex rounded py-1 px-4 text-sm font-medium ${isChecked ? `` : `bg-gray-500 text-gray-100`
+                }`}
         >
             Benefit
         </span>
     );
 
     const useFormInertia = useForm({
-        kinerja: 0.5,
+        kinerja: 0.2,
         kinerja_tipe: 1,
-        ketepatan_waktu: 0.5,
+        ketepatan_waktu: 0.7,
         ketepatan_waktu_tipe: 0,
-        komunikasi: 0.5,
+        komunikasi: 0.6,
         komunikasi_tipe: 0,
-        kreatifitas: 0.5,
+        kreatifitas: 0.9,
         kreatifitas_tipe: 0,
-        kehadiran: 0.5,
+        kehadiran: 0.7,
         kehadiran_tipe: 0,
     });
 
@@ -290,326 +288,328 @@ export default function Form({ auth, status, title, employers, asset_url }) {
         <AuthenticatedLayout
             auth={auth}
             header={
-                <h2 className="font-semibold text-xl text-gray-800  leading-tight">
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                     {title}
                 </h2>
             }
         >
             <Head title={title} />
 
-            <div className="py-6">
-                <div className="mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900 ">
-                            {status && (
-                                <div className="mb-4 font-medium text-sm text-green-600">
-                                    {status}
-                                </div>
-                            )}
-                            <form onSubmit={submit}>
-                                <div className="mt-4 flex gap-2">
-                                    <div className="basis-8/12 relative">
-                                        <InputLabel
-                                            forInput="kinerja"
-                                            className="flex justify-between"
-                                        >
-                                            <span>Bobot Kinerja (0 - 1)</span>
-                                            <span>{data.kinerja}</span>
-                                        </InputLabel>
+            <div className="flex justify-center">
+                <div className="py-6 w-1/2">
+                    <div className="mx-auto sm:px-6 lg:px-8">
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div className="p-6 text-gray-900 ">
+                                {status && (
+                                    <div className="mb-4 font-medium text-sm text-green-600">
+                                        {status}
+                                    </div>
+                                )}
+                                <form onSubmit={submit}>
+                                    <div className="mt-4 flex gap-2">
+                                        <div className="basis-8/12 relative">
+                                            <InputLabel
+                                                forInput="kinerja"
+                                                className="flex justify-between"
+                                            >
+                                                <span>Bobot Kinerja (0 - 1)</span>
+                                                <span>{data.kinerja}</span>
+                                            </InputLabel>
 
-                                        <RangeInput
-                                            id="kinerja"
-                                            name="kinerja"
-                                            value={data.kinerja}
-                                            min={0}
-                                            max={1}
-                                            step={0.1}
-                                            className="
+                                            <RangeInput
+                                                id="kinerja"
+                                                name="kinerja"
+                                                value={data.kinerja}
+                                                min={0}
+                                                max={1}
+                                                step={0.1}
+                                                className="
                                             mt-1 block w-full
                                             before:content-['min'] before:absolute before:left-0 before:top-11
                                             after:content-['max'] after:absolute after:right-0 after:top-11
                                         "
-                                            handleChange={onHandleChange}
-                                            disabled={showResult}
-                                        />
-
-                                        <InputError
-                                            message={errors.kinerja}
-                                            className="mt-2"
-                                        />
-                                    </div>
-                                    <div className="basis-4/12 flex justify-center">
-                                        <div>
-                                            <InputLabel
-                                                forInput="kinerja_tipe"
-                                                value="Tipe Kinerja"
-                                            />
-
-                                            <SwitchInput
-                                                name="kinerja_tipe"
-                                                id="kinerja_tipe"
-                                                isChecked={data.kinerja_tipe}
                                                 handleChange={onHandleChange}
-                                                LeftChild={leftChild}
-                                                RightChild={rightChild}
                                                 disabled={showResult}
                                             />
 
                                             <InputError
-                                                message={errors.kinerja_tipe}
+                                                message={errors.kinerja}
                                                 className="mt-2"
                                             />
                                         </div>
+                                        <div className="basis-4/12 flex justify-center">
+                                            <div>
+                                                <InputLabel
+                                                    forInput="kinerja_tipe"
+                                                    value="Tipe Kinerja"
+                                                />
+
+                                                <SwitchInput
+                                                    name="kinerja_tipe"
+                                                    id="kinerja_tipe"
+                                                    isChecked={data.kinerja_tipe}
+                                                    handleChange={onHandleChange}
+                                                    LeftChild={leftChild}
+                                                    RightChild={rightChild}
+                                                    disabled={showResult}
+                                                />
+
+                                                <InputError
+                                                    message={errors.kinerja_tipe}
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="mt-12 flex gap-2">
-                                    <div className="basis-8/12 relative">
-                                        <InputLabel
-                                            forInput="ketepatan_waktu"
-                                            className="flex justify-between"
-                                        >
-                                            <span>
-                                                Bobot Ketepatan Waktu (0 - 1)
-                                            </span>
-                                            <span>{data.ketepatan_waktu}</span>
-                                        </InputLabel>
+                                    <div className="mt-12 flex gap-2">
+                                        <div className="basis-8/12 relative">
+                                            <InputLabel
+                                                forInput="ketepatan_waktu"
+                                                className="flex justify-between"
+                                            >
+                                                <span>
+                                                    Bobot Ketepatan Waktu (0 - 1)
+                                                </span>
+                                                <span>{data.ketepatan_waktu}</span>
+                                            </InputLabel>
 
-                                        <RangeInput
-                                            id="ketepatan_waktu"
-                                            name="ketepatan_waktu"
-                                            value={data.ketepatan_waktu}
-                                            min={0}
-                                            max={1}
-                                            step={0.1}
-                                            className="
+                                            <RangeInput
+                                                id="ketepatan_waktu"
+                                                name="ketepatan_waktu"
+                                                value={data.ketepatan_waktu}
+                                                min={0}
+                                                max={1}
+                                                step={0.1}
+                                                className="
                                             mt-1 block w-full
                                             before:content-['min'] before:absolute before:left-0 before:top-11
                                             after:content-['max'] after:absolute after:right-0 after:top-11
                                         "
-                                            handleChange={onHandleChange}
-                                            disabled={showResult}
-                                        />
-
-                                        <InputError
-                                            message={errors.ketepatan_waktu}
-                                            className="mt-2"
-                                        />
-                                    </div>
-                                    <div className="basis-4/12 flex justify-center">
-                                        <div>
-                                            <InputLabel
-                                                forInput="ketepatan_waktu_tipe"
-                                                value="Tipe Ketepatan Waktu"
-                                            />
-
-                                            <SwitchInput
-                                                name="ketepatan_waktu_tipe"
-                                                id="ketepatan_waktu_tipe"
-                                                isChecked={
-                                                    data.ketepatan_waktu_tipe
-                                                }
                                                 handleChange={onHandleChange}
-                                                LeftChild={leftChild}
-                                                RightChild={rightChild}
                                                 disabled={showResult}
                                             />
 
                                             <InputError
-                                                message={
-                                                    errors.ketepatan_waktu_tipe
-                                                }
+                                                message={errors.ketepatan_waktu}
                                                 className="mt-2"
                                             />
                                         </div>
+                                        <div className="basis-4/12 flex justify-center">
+                                            <div>
+                                                <InputLabel
+                                                    forInput="ketepatan_waktu_tipe"
+                                                    value="Tipe Ketepatan Waktu"
+                                                />
+
+                                                <SwitchInput
+                                                    name="ketepatan_waktu_tipe"
+                                                    id="ketepatan_waktu_tipe"
+                                                    isChecked={
+                                                        data.ketepatan_waktu_tipe
+                                                    }
+                                                    handleChange={onHandleChange}
+                                                    LeftChild={leftChild}
+                                                    RightChild={rightChild}
+                                                    disabled={showResult}
+                                                />
+
+                                                <InputError
+                                                    message={
+                                                        errors.ketepatan_waktu_tipe
+                                                    }
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="mt-12 flex gap-2">
-                                    <div className="basis-8/12 relative">
-                                        <InputLabel
-                                            forInput="komunikasi"
-                                            className="flex justify-between"
-                                        >
-                                            <span>
-                                                Bobot Komunikasi (0 - 1)
-                                            </span>
-                                            <span>{data.komunikasi}</span>
-                                        </InputLabel>
+                                    <div className="mt-12 flex gap-2">
+                                        <div className="basis-8/12 relative">
+                                            <InputLabel
+                                                forInput="komunikasi"
+                                                className="flex justify-between"
+                                            >
+                                                <span>
+                                                    Bobot Komunikasi (0 - 1)
+                                                </span>
+                                                <span>{data.komunikasi}</span>
+                                            </InputLabel>
 
-                                        <RangeInput
-                                            id="komunikasi"
-                                            name="komunikasi"
-                                            value={data.komunikasi}
-                                            min={0}
-                                            max={1}
-                                            step={0.1}
-                                            className="
+                                            <RangeInput
+                                                id="komunikasi"
+                                                name="komunikasi"
+                                                value={data.komunikasi}
+                                                min={0}
+                                                max={1}
+                                                step={0.1}
+                                                className="
                                             mt-1 block w-full
                                             before:content-['min'] before:absolute before:left-0 before:top-11
                                             after:content-['max'] after:absolute after:right-0 after:top-11
                                         "
-                                            handleChange={onHandleChange}
-                                            disabled={showResult}
-                                        />
-
-                                        <InputError
-                                            message={errors.komunikasi}
-                                            className="mt-2"
-                                        />
-                                    </div>
-                                    <div className="basis-4/12 flex justify-center">
-                                        <div>
-                                            <InputLabel
-                                                forInput="komunikasi_tipe"
-                                                value="Tipe Komunikasi"
-                                            />
-
-                                            <SwitchInput
-                                                name="komunikasi_tipe"
-                                                id="komunikasi_tipe"
-                                                isChecked={data.komunikasi_tipe}
                                                 handleChange={onHandleChange}
-                                                LeftChild={leftChild}
-                                                RightChild={rightChild}
                                                 disabled={showResult}
                                             />
 
                                             <InputError
-                                                message={errors.komunikasi_tipe}
+                                                message={errors.komunikasi}
                                                 className="mt-2"
                                             />
                                         </div>
+                                        <div className="basis-4/12 flex justify-center">
+                                            <div>
+                                                <InputLabel
+                                                    forInput="komunikasi_tipe"
+                                                    value="Tipe Komunikasi"
+                                                />
+
+                                                <SwitchInput
+                                                    name="komunikasi_tipe"
+                                                    id="komunikasi_tipe"
+                                                    isChecked={data.komunikasi_tipe}
+                                                    handleChange={onHandleChange}
+                                                    LeftChild={leftChild}
+                                                    RightChild={rightChild}
+                                                    disabled={showResult}
+                                                />
+
+                                                <InputError
+                                                    message={errors.komunikasi_tipe}
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="mt-12 flex gap-2">
-                                    <div className="basis-8/12 relative">
-                                        <InputLabel
-                                            forInput="kreatifitas"
-                                            className="flex justify-between"
-                                        >
-                                            <span>
-                                                Bobot Kreatifitas (0 - 1)
-                                            </span>
-                                            <span>{data.kreatifitas}</span>
-                                        </InputLabel>
+                                    <div className="mt-12 flex gap-2">
+                                        <div className="basis-8/12 relative">
+                                            <InputLabel
+                                                forInput="kreatifitas"
+                                                className="flex justify-between"
+                                            >
+                                                <span>
+                                                    Bobot Kreatifitas (0 - 1)
+                                                </span>
+                                                <span>{data.kreatifitas}</span>
+                                            </InputLabel>
 
-                                        <RangeInput
-                                            id="kreatifitas"
-                                            name="kreatifitas"
-                                            value={data.kreatifitas}
-                                            min={0}
-                                            max={1}
-                                            step={0.1}
-                                            className="
+                                            <RangeInput
+                                                id="kreatifitas"
+                                                name="kreatifitas"
+                                                value={data.kreatifitas}
+                                                min={0}
+                                                max={1}
+                                                step={0.1}
+                                                className="
                                             mt-1 block w-full
                                             before:content-['min'] before:absolute before:left-0 before:top-11
                                             after:content-['max'] after:absolute after:right-0 after:top-11
                                         "
-                                            handleChange={onHandleChange}
-                                            disabled={showResult}
-                                        />
-
-                                        <InputError
-                                            message={errors.kreatifitas}
-                                            className="mt-2"
-                                        />
-                                    </div>
-                                    <div className="basis-4/12 flex justify-center">
-                                        <div>
-                                            <InputLabel
-                                                forInput="kreatifitas_tipe"
-                                                value="Tipe Kreatifitas"
-                                            />
-
-                                            <SwitchInput
-                                                name="kreatifitas_tipe"
-                                                id="kreatifitas_tipe"
-                                                isChecked={
-                                                    data.kreatifitas_tipe
-                                                }
                                                 handleChange={onHandleChange}
-                                                LeftChild={leftChild}
-                                                RightChild={rightChild}
                                                 disabled={showResult}
                                             />
 
                                             <InputError
-                                                message={
-                                                    errors.kreatifitas_tipe
-                                                }
+                                                message={errors.kreatifitas}
                                                 className="mt-2"
                                             />
                                         </div>
+                                        <div className="basis-4/12 flex justify-center">
+                                            <div>
+                                                <InputLabel
+                                                    forInput="kreatifitas_tipe"
+                                                    value="Tipe Kreatifitas"
+                                                />
+
+                                                <SwitchInput
+                                                    name="kreatifitas_tipe"
+                                                    id="kreatifitas_tipe"
+                                                    isChecked={
+                                                        data.kreatifitas_tipe
+                                                    }
+                                                    handleChange={onHandleChange}
+                                                    LeftChild={leftChild}
+                                                    RightChild={rightChild}
+                                                    disabled={showResult}
+                                                />
+
+                                                <InputError
+                                                    message={
+                                                        errors.kreatifitas_tipe
+                                                    }
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="mt-12 flex gap-2">
-                                    <div className="basis-8/12 relative">
-                                        <InputLabel
-                                            forInput="kehadiran"
-                                            className="flex justify-between"
-                                        >
-                                            <span>Bobot Kehadiran (0 - 1)</span>
-                                            <span>{data.kehadiran}</span>
-                                        </InputLabel>
+                                    <div className="mt-12 flex gap-2">
+                                        <div className="basis-8/12 relative">
+                                            <InputLabel
+                                                forInput="kehadiran"
+                                                className="flex justify-between"
+                                            >
+                                                <span>Bobot Kehadiran (0 - 1)</span>
+                                                <span>{data.kehadiran}</span>
+                                            </InputLabel>
 
-                                        <RangeInput
-                                            id="kehadiran"
-                                            name="kehadiran"
-                                            value={data.kehadiran}
-                                            min={0}
-                                            max={1}
-                                            step={0.1}
-                                            className="
+                                            <RangeInput
+                                                id="kehadiran"
+                                                name="kehadiran"
+                                                value={data.kehadiran}
+                                                min={0}
+                                                max={1}
+                                                step={0.1}
+                                                className="
                                             mt-1 block w-full
                                             before:content-['min'] before:absolute before:left-0 before:top-11
                                             after:content-['max'] after:absolute after:right-0 after:top-11
                                         "
-                                            handleChange={onHandleChange}
-                                            disabled={showResult}
-                                        />
-
-                                        <InputError
-                                            message={errors.kehadiran}
-                                            className="mt-2"
-                                        />
-                                    </div>
-                                    <div className="basis-4/12 flex justify-center">
-                                        <div>
-                                            <InputLabel
-                                                forInput="kehadiran_tipe"
-                                                value="Tipe Kehadiran"
-                                            />
-
-                                            <SwitchInput
-                                                name="kehadiran_tipe"
-                                                id="kehadiran_tipe"
-                                                isChecked={data.kehadiran_tipe}
                                                 handleChange={onHandleChange}
-                                                LeftChild={leftChild}
-                                                RightChild={rightChild}
                                                 disabled={showResult}
                                             />
 
                                             <InputError
-                                                message={errors.kehadiran_tipe}
+                                                message={errors.kehadiran}
                                                 className="mt-2"
                                             />
                                         </div>
-                                    </div>
-                                </div>
+                                        <div className="basis-4/12 flex justify-center">
+                                            <div>
+                                                <InputLabel
+                                                    forInput="kehadiran_tipe"
+                                                    value="Tipe Kehadiran"
+                                                />
 
-                                <div className="mt-12 flex items-center justify-end">
-                                    <PrimaryButton
-                                        className="ml-4"
-                                        processing={processing}
-                                    >
-                                        Proses Pilihan
-                                    </PrimaryButton>
-                                </div>
-                            </form>
+                                                <SwitchInput
+                                                    name="kehadiran_tipe"
+                                                    id="kehadiran_tipe"
+                                                    isChecked={data.kehadiran_tipe}
+                                                    handleChange={onHandleChange}
+                                                    LeftChild={leftChild}
+                                                    RightChild={rightChild}
+                                                    disabled={showResult}
+                                                />
+
+                                                <InputError
+                                                    message={errors.kehadiran_tipe}
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-12 flex items-center justify-end">
+                                        <PrimaryButton
+                                            className="ml-4"
+                                            processing={processing}
+                                        >
+                                            Proses Pilihan
+                                        </PrimaryButton>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

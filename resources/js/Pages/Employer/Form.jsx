@@ -26,26 +26,24 @@ export default function Form({
     const useFormInertia = useForm({
         nik: terpilih ? terpilih.nik : "",
         nama: terpilih ? terpilih.nama : "",
-        p_area: terpilih ? terpilih.p_area : "",
-        personnel_subarea: terpilih ? terpilih.personnel_subarea : "",
-        bagian: terpilih ? terpilih.bagian : "",
-        job_group: terpilih ? terpilih.job_group : "",
+        p_area: terpilih ? terpilih.p_area : "P4",
+        personnel_subarea: terpilih ? terpilih.personnel_subarea : "PB DANAU KEMBAR",
+        bagian: terpilih ? terpilih.bagian : "Bagian Pengolahan Shift I",
+        job_group: terpilih ? terpilih.job_group : "Pekerja",
         posisi_kerja: terpilih ? terpilih.posisi_kerja : "",
-        status: terpilih ? terpilih.status : "",
         jenis_kelamin: terpilih ? terpilih.jenis_kelamin : "Male",
-        edu_establishment: terpilih ? terpilih.edu_establishment : "",
+        edu_establishment: terpilih ? terpilih.edu_establishment : "SD",
         tgl_lahir: terpilih
             ? moment.utc(terpilih.tgl_lahir).toDate()
             : new Date(),
         tgl_masuk: terpilih
             ? moment.utc(terpilih.tgl_masuk).toDate()
             : new Date(),
-        jarak_alamat: terpilih ? terpilih.jarak_alamat : "",
-        kinerja: terpilih ? terpilih.kinerja : "",
-        ketepatan_waktu: terpilih ? terpilih.ketepatan_waktu : "",
-        komunikasi: terpilih ? terpilih.komunikasi : "",
-        kreatifitas: terpilih ? terpilih.kreatifitas : "",
-        kehadiran: terpilih ? terpilih.kehadiran : "",
+        kinerja: terpilih ? terpilih.kinerja : 10,
+        ketepatan_waktu: terpilih ? terpilih.ketepatan_waktu : 10,
+        komunikasi: terpilih ? terpilih.komunikasi : 10,
+        kreatifitas: terpilih ? terpilih.kreatifitas : 10,
+        kehadiran: terpilih ? terpilih.kehadiran : 10,
     });
 
     const { data, setData, processing, errors, reset } = useFormInertia;
@@ -70,12 +68,10 @@ export default function Form({
                 "bagian",
                 "job_group",
                 "posisi_kerja",
-                "status",
                 "jenis_kelamin",
                 "edu_establishment",
                 "tgl_lahir",
                 "tgl_masuk",
-                "jarak_alamat",
                 "kinerja",
                 "ketepatan_waktu",
                 "komunikasi",
@@ -174,16 +170,18 @@ export default function Form({
                                             value="P Area"
                                         />
 
-                                        <SearchInput
-                                            handleChange={onHandleChange}
-                                            type="text"
+                                        <SelectInput
                                             id="p_area"
                                             name="p_area"
-                                            className="mt-1 block w-full"
                                             value={data.p_area}
-                                            searchValues={employers.map(
-                                                (employer) => employer.p_area
-                                            )}
+                                            className="mt-1 block w-full"
+                                            handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "P4",
+                                                    value: "P4",
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -197,17 +195,22 @@ export default function Form({
                                             value="Personel Subarea"
                                         />
 
-                                        <SearchInput
-                                            handleChange={onHandleChange}
-                                            type="text"
+                                        <SelectInput
                                             id="personnel_subarea"
                                             name="personnel_subarea"
-                                            className="mt-1 block w-full"
                                             value={data.personnel_subarea}
-                                            searchValues={employers.map(
-                                                (employer) =>
-                                                    employer.personnel_subarea
-                                            )}
+                                            className="mt-1 block w-full"
+                                            handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "PB DANAU KEMBAR",
+                                                    value: "PB DANAU KEMBAR",
+                                                },
+                                                {
+                                                    label: "KB DANAU KEMBAR",
+                                                    value: "KB DANAU KEMBAR",
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -224,16 +227,30 @@ export default function Form({
                                             value="Bagian"
                                         />
 
-                                        <SearchInput
-                                            handleChange={onHandleChange}
-                                            type="text"
+                                        <SelectInput
                                             id="bagian"
                                             name="bagian"
-                                            className="mt-1 block w-full"
                                             value={data.bagian}
-                                            searchValues={employers.map(
-                                                (employer) => employer.bagian
-                                            )}
+                                            className="mt-1 block w-full"
+                                            handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "Bagian Pengolahan Shift I",
+                                                    value: "Bagian Pengolahan Shift I",
+                                                },
+                                                {
+                                                    label: "Bagian Teknik",
+                                                    value: "Bagian Teknik",
+                                                },
+                                                {
+                                                    label: "Bagian Tata Usaha",
+                                                    value: "Bagian Tata Usaha",
+                                                },
+                                                {
+                                                    label: "Bagian Personalia Kebun & Umum",
+                                                    value: "Bagian Personalia Kebun & Umum",
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -247,16 +264,34 @@ export default function Form({
                                             value="Job Group"
                                         />
 
-                                        <SearchInput
-                                            handleChange={onHandleChange}
-                                            type="text"
+                                        <SelectInput
                                             id="job_group"
                                             name="job_group"
-                                            className="mt-1 block w-full"
                                             value={data.job_group}
-                                            searchValues={employers.map(
-                                                (employer) => employer.job_group
-                                            )}
+                                            className="mt-1 block w-full"
+                                            handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "Pekerja",
+                                                    value: "Pekerja",
+                                                },
+                                                {
+                                                    label: "Mandor",
+                                                    value: "Mandor",
+                                                },
+                                                {
+                                                    label: "Tukang",
+                                                    value: "Tukang",
+                                                },
+                                                {
+                                                    label: "Operator",
+                                                    value: "Operator",
+                                                },
+                                                {
+                                                    label: "Pengamanan",
+                                                    value: "Pengamanan",
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -293,32 +328,6 @@ export default function Form({
                                     </div>
                                     <div className="basis-6/12">
                                         <InputLabel
-                                            forInput="status"
-                                            value="Status"
-                                        />
-
-                                        <SearchInput
-                                            handleChange={onHandleChange}
-                                            type="text"
-                                            id="status"
-                                            name="status"
-                                            className="mt-1 block w-full"
-                                            value={data.status}
-                                            searchValues={employers.map(
-                                                (employer) => employer.status
-                                            )}
-                                        />
-
-                                        <InputError
-                                            message={errors.status}
-                                            className="mt-2"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="mt-4 flex gap-2">
-                                    <div className="basis-6/12">
-                                        <InputLabel
                                             forInput="jenis_kelamin"
                                             value="Jenis Kelamin"
                                         />
@@ -346,23 +355,43 @@ export default function Form({
                                             className="mt-2"
                                         />
                                     </div>
-                                    <div className="basis-6/12">
+                                </div>
+
+                                <div className="mt-4 flex gap-2">
+                                    <div className="basis-4/12">
                                         <InputLabel
                                             forInput="edu_establishment"
                                             value="Education Establishment"
                                         />
 
-                                        <SearchInput
-                                            handleChange={onHandleChange}
-                                            type="text"
+                                        <SelectInput
                                             id="edu_establishment"
                                             name="edu_establishment"
-                                            className="mt-1 block w-full"
                                             value={data.edu_establishment}
-                                            searchValues={employers.map(
-                                                (employer) =>
-                                                    employer.edu_establishment
-                                            )}
+                                            className="mt-1 block w-full"
+                                            handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "SD",
+                                                    value: "SD",
+                                                },
+                                                {
+                                                    label: "SLTP",
+                                                    value: "SLTP",
+                                                },
+                                                {
+                                                    label: "SLTA",
+                                                    value: "SLTA",
+                                                },
+                                                {
+                                                    label: "DIPLOMA",
+                                                    value: "DIPLOMA",
+                                                },
+                                                {
+                                                    label: "S1",
+                                                    value: "S1",
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -370,9 +399,6 @@ export default function Form({
                                             className="mt-2"
                                         />
                                     </div>
-                                </div>
-
-                                <div className="mt-4 flex gap-2">
                                     <div className="basis-4/12">
                                         <InputLabel
                                             forInput="tgl_lahir"
@@ -413,28 +439,6 @@ export default function Form({
                                             className="mt-2"
                                         />
                                     </div>
-                                    <div className="basis-4/12">
-                                        <InputLabel
-                                            forInput="jarak_alamat"
-                                            value="Jarak Alamat Dalam (KM)"
-                                        />
-
-                                        <TextInput
-                                            id="jarak_alamat"
-                                            type="number"
-                                            name="jarak_alamat"
-                                            value={data.jarak_alamat}
-                                            className="mt-1 block w-full"
-                                            autoComplete="jarak_alamat"
-                                            isFocused={true}
-                                            handleChange={onHandleChange}
-                                        />
-
-                                        <InputError
-                                            message={errors.jarak_alamat}
-                                            className="mt-2"
-                                        />
-                                    </div>
                                 </div>
 
                                 <div className="mt-4 flex gap-2">
@@ -444,15 +448,34 @@ export default function Form({
                                             value="Kinerja"
                                         />
 
-                                        <TextInput
+                                        <SelectInput
                                             id="kinerja"
-                                            type="number"
                                             name="kinerja"
                                             value={data.kinerja}
                                             className="mt-1 block w-full"
-                                            autoComplete="kinerja"
-                                            isFocused={true}
                                             handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "Sangat Buruk",
+                                                    value: 10,
+                                                },
+                                                {
+                                                    label: "Buruk",
+                                                    value: 20,
+                                                },
+                                                {
+                                                    label: "Menengah",
+                                                    value: 60,
+                                                },
+                                                {
+                                                    label: "Baik",
+                                                    value: 50,
+                                                },
+                                                {
+                                                    label: "Sangat Baik",
+                                                    value: 100,
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -466,15 +489,34 @@ export default function Form({
                                             value="Ketepatan Masuk"
                                         />
 
-                                        <TextInput
+                                        <SelectInput
                                             id="ketepatan_waktu"
-                                            type="number"
                                             name="ketepatan_waktu"
                                             value={data.ketepatan_waktu}
                                             className="mt-1 block w-full"
-                                            autoComplete="ketepatan_waktu"
-                                            isFocused={true}
                                             handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "Sangat Buruk",
+                                                    value: 10,
+                                                },
+                                                {
+                                                    label: "Buruk",
+                                                    value: 20,
+                                                },
+                                                {
+                                                    label: "Menengah",
+                                                    value: 60,
+                                                },
+                                                {
+                                                    label: "Baik",
+                                                    value: 50,
+                                                },
+                                                {
+                                                    label: "Sangat Baik",
+                                                    value: 100,
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -488,15 +530,34 @@ export default function Form({
                                             value="Komunikasi"
                                         />
 
-                                        <TextInput
+                                        <SelectInput
                                             id="komunikasi"
-                                            type="number"
                                             name="komunikasi"
                                             value={data.komunikasi}
                                             className="mt-1 block w-full"
-                                            autoComplete="komunikasi"
-                                            isFocused={true}
                                             handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "Sangat Buruk",
+                                                    value: 10,
+                                                },
+                                                {
+                                                    label: "Buruk",
+                                                    value: 20,
+                                                },
+                                                {
+                                                    label: "Menengah",
+                                                    value: 60,
+                                                },
+                                                {
+                                                    label: "Baik",
+                                                    value: 50,
+                                                },
+                                                {
+                                                    label: "Sangat Baik",
+                                                    value: 100,
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -513,15 +574,34 @@ export default function Form({
                                             value="Kreatifitas"
                                         />
 
-                                        <TextInput
+                                        <SelectInput
                                             id="kreatifitas"
-                                            type="number"
                                             name="kreatifitas"
                                             value={data.kreatifitas}
                                             className="mt-1 block w-full"
-                                            autoComplete="kreatifitas"
-                                            isFocused={true}
                                             handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "Sangat Buruk",
+                                                    value: 10,
+                                                },
+                                                {
+                                                    label: "Buruk",
+                                                    value: 20,
+                                                },
+                                                {
+                                                    label: "Menengah",
+                                                    value: 60,
+                                                },
+                                                {
+                                                    label: "Baik",
+                                                    value: 50,
+                                                },
+                                                {
+                                                    label: "Sangat Baik",
+                                                    value: 100,
+                                                }
+                                            ]}
                                         />
 
                                         <InputError
@@ -535,15 +615,34 @@ export default function Form({
                                             value="Kehadiran"
                                         />
 
-                                        <TextInput
+                                        <SelectInput
                                             id="kehadiran"
-                                            type="number"
                                             name="kehadiran"
                                             value={data.kehadiran}
                                             className="mt-1 block w-full"
-                                            autoComplete="kehadiran"
-                                            isFocused={true}
                                             handleChange={onHandleChange}
+                                            options={[
+                                                {
+                                                    label: "Sangat Buruk",
+                                                    value: 10,
+                                                },
+                                                {
+                                                    label: "Buruk",
+                                                    value: 20,
+                                                },
+                                                {
+                                                    label: "Menengah",
+                                                    value: 60,
+                                                },
+                                                {
+                                                    label: "Baik",
+                                                    value: 50,
+                                                },
+                                                {
+                                                    label: "Sangat Baik",
+                                                    value: 100,
+                                                }
+                                            ]}
                                         />
 
                                         <InputError

@@ -26,19 +26,17 @@ class StoreEmployerRequest extends FormRequest
     public function rules()
     {
         return [
-            'nik' => ['required', 'string'],
+            'nik' => ['required', 'string', 'max:8'],
             'nama' => ['required', 'string'],
             'p_area' => ['required', 'string'],
             'personnel_subarea' => ['required', 'string'],
             'bagian' => ['required', 'string'],
             'job_group' => ['required', 'string'],
             'posisi_kerja' => ['required', 'string'],
-            'status' => ['required', 'string'],
             'jenis_kelamin' => ['required', Rule::in(['Male', 'Female'])],
-            'edu_establishment' => ['required', Rule::in(['SD', 'Female'])],
+            'edu_establishment' => ['required', 'string'],
             'tgl_lahir' => ['required', 'string'],
             'tgl_masuk' => ['required', 'string'],
-            'jarak_alamat' => ['required', 'integer'],
             'kinerja' => ['required', 'integer'],
             'ketepatan_waktu' => ['required', 'integer'],
             'komunikasi' => ['required', 'integer'],

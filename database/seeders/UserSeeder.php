@@ -20,7 +20,15 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('admin'),
         ]);
-
         $admin->markEmailAsVerified();
+        $admin->assignRole('admin');
+
+        $pimpinan = User::create([
+            'name' => 'Pimpinan',
+            'email' => 'pimpinan@gmail.com',
+            'password' => bcrypt('pimpinan'),
+        ]);
+        $pimpinan->markEmailAsVerified();
+        $pimpinan->assignRole('pimpinan');
     }
 }
