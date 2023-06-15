@@ -8,14 +8,16 @@ import DataTable from "react-data-table-component";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 export default function Index({ data, auth, status, asset_url }) {
-    const columnsSelector = (cellValue, href) => (
-        <Link
-            className="flex items-center cursor-pointer w-full"
-            href={route("dashboard.edit", href)}
-        >
-            {cellValue}
-        </Link>
-    );
+    const columnsSelector = (cellValue, href) => {
+        return (
+            auth.user.roles.includes("admin") ? <Link
+                className="flex items-center cursor-pointer w-full"
+                href={route("dashboard.edit", href)}
+            >
+                {cellValue}
+            </Link> : cellValue
+        )
+    };
 
     const dateTimeFormat = (value) =>
         new Date(value).toLocaleDateString("id-ID", {
@@ -187,14 +189,14 @@ export default function Index({ data, auth, status, asset_url }) {
                     <h2 className="font-semibold text-xl text-gray-800  leading-tight">
                         Tabel Karyawan
                     </h2>
-                    <div className="space-x-4 -my-px ml-10 flex">
+                    {auth.user.roles.includes("admin") && <div className="space-x-4 -my-px ml-10 flex">
                         <Link
                             href={route("dashboard.new")}
                             className="rounded block px-4 py-2 text-sm leading-5 text-light-700 hover:bg-light-100 focus:outline-none focus:bg-light-10 transition duration-150 ease-in-out"
                         >
                             Tambah Data
                         </Link>
-                    </div>
+                    </div>}
                 </div>
             }
         >

@@ -39,11 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', [EmployerController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/new', [EmployerController::class, 'create'])->name('dashboard.new');
-    Route::post('/dashboard/new', [EmployerController::class, 'store'])->name('dashboard.new');
-    Route::get('/dashboard/{id}', [EmployerController::class, 'edit'])->name('dashboard.edit');
-    Route::post('/dashboard/{id}', [EmployerController::class, 'update'])->name('dashboard.edit');
-    Route::delete('/dashboard/{id}', [EmployerController::class, 'destroy'])->name('dashboard.delete');
+
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::get('/dashboard/new', [EmployerController::class, 'create'])->name('dashboard.new');
+        Route::post('/dashboard/new', [EmployerController::class, 'store'])->name('dashboard.new');
+        Route::get('/dashboard/{id}', [EmployerController::class, 'edit'])->name('dashboard.edit');
+        Route::post('/dashboard/{id}', [EmployerController::class, 'update'])->name('dashboard.edit');
+        Route::delete('/dashboard/{id}', [EmployerController::class, 'destroy'])->name('dashboard.delete');
+    });
 
     Route::get(
         '/employe',
