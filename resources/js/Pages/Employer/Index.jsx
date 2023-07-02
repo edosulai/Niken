@@ -4,6 +4,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/TextInput";
 import { Head, Link } from "@inertiajs/react";
 import DataTable from "react-data-table-component";
+import DataTableExtensions from 'react-data-table-component-extensions';
+import 'react-data-table-component-extensions/dist/index.css';
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
@@ -95,12 +97,6 @@ export default function Index({ data, auth, status, asset_url }) {
             sortable: true,
         },
         {
-            name: "Status",
-            cell: (row) => columnsSelector(row.status, row.id),
-            selector: (row) => row.status,
-            sortable: true,
-        },
-        {
             name: "Jenis Kelamin",
             cell: (row) => columnsSelector(row.jenis_kelamin, row.id),
             selector: (row) => row.jenis_kelamin,
@@ -124,12 +120,6 @@ export default function Index({ data, auth, status, asset_url }) {
             cell: (row) =>
                 columnsSelector(dateTimeFormat(row.tgl_masuk), row.id),
             selector: (row) => dateTimeFormat(row.tgl_masuk),
-            sortable: true,
-        },
-        {
-            name: "Jarak Alamat",
-            cell: (row) => columnsSelector(`${row.jarak_alamat} km`, row.id),
-            selector: (row) => `${row.jarak_alamat} km`,
             sortable: true,
         },
         {
@@ -212,29 +202,32 @@ export default function Index({ data, auth, status, asset_url }) {
                                 </div>
                             )}
 
-                            <DataTable
-                                // title="Tabel Karyawan"
+                            <DataTableExtensions
                                 columns={columns}
                                 data={filteredData}
-                                pagination={true}
-                                dense={true}
-                                highlightOnHover={true}
-                                pointerOnHover={true}
-                                striped={true}
-                                responsive={true}
-                                subHeader={true}
-                                subHeaderComponent={
-                                    <TextInput
-                                        id="search_input"
-                                        type="text"
-                                        name="search_input"
-                                        className="block w-full"
-                                        isFocused={true}
-                                        handleChange={handleSearch}
-                                        placeholder="Search"
-                                    />
-                                }
-                            />
+                            >
+                                <DataTable
+                                    // title="Tabel Karyawan"
+                                    pagination={true}
+                                    dense={true}
+                                    highlightOnHover={true}
+                                    pointerOnHover={true}
+                                    striped={true}
+                                    responsive={true}
+                                    subHeader={false}
+                                    subHeaderComponent={
+                                        <TextInput
+                                            id="search_input"
+                                            type="text"
+                                            name="search_input"
+                                            className="block w-full"
+                                            isFocused={true}
+                                            handleChange={handleSearch}
+                                            placeholder="Search"
+                                        />
+                                    }
+                                />
+                            </DataTableExtensions>
                         </div>
                     </div>
                 </div>
