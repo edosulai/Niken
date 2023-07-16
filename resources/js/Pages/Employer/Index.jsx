@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/TextInput";
 import { Head, Link } from "@inertiajs/react";
 import DataTable from "react-data-table-component";
-import DataTableExtensions from 'react-data-table-component-extensions';
+import DataTableExtensions from '../../Components/DataTableExtensions';
 import 'react-data-table-component-extensions/dist/index.css';
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
@@ -205,6 +205,7 @@ export default function Index({ data, auth, status, asset_url }) {
                             <DataTableExtensions
                                 columns={columns}
                                 data={filteredData}
+                                exportHeaders
                             >
                                 <DataTable
                                     // title="Tabel Karyawan"
