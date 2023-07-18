@@ -1076,17 +1076,18 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 text-gray-900">
                                 <DataTableExtensions
+                                    exportHeaders
                                     columns={[
                                         {
                                             name: "Alternatif",
                                             selector: (row) =>
-                                                `A${row.no} ${row.nama}`,
+                                                `A${row.alternatif.no} ${row.alternatif.nama}`,
                                             cell: (row) => (
                                                 <span className="w-52">
-                                                    A{row.no} <b>{row.nama}</b>
+                                                    A{row.alternatif.no} <b>{row.alternatif.nama}</b>
                                                 </span>
                                             ),
-                                            cellExport: (row) => `A${row.no} ${row.nama}`,
+                                            cellExport: (row) => `A${row.alternatif.no} ${row.alternatif.nama}`,
                                             sortable: true,
                                             width: "208px",
                                         },
@@ -1176,25 +1177,33 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                             );
 
                                         return {
-                                            no: employ.no,
-                                            nama: employ.nama,
+                                            alternatif: {
+                                                no: employ.no,
+                                                nama: employ.nama,
+                                            },
+                                            result:
+                                                targetVector /
+                                                _.sum(dataVectors),
                                             rumus: {
                                                 index: index,
                                                 targetVector: targetVector,
                                                 dataVector: dataVectors,
                                             },
-                                            result:
-                                                targetVector /
-                                                _.sum(dataVectors),
+
                                         };
                                     })}
-                                    exportHeaders
                                     letterhead={{
                                         html: `
                                         <h1>PT PERKEBUNAN NUSANTARA VI</h1>
                                         <p>Kantor Pusat: Jl. Lingkar Barat Paal X Kota Baru, Jambi Kode Pos 36128</p>
                                         <p>Tlp. +62 741 445603 Fax. +62 741 445500</p>
                                         <a href="mailto:sekretariat.pn6@gmail.com">sekretariat.pn6@gmail.com</a>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
                                         `,
                                         css: {
                                             textAlign: 'center',
@@ -1202,6 +1211,12 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                     }}
                                     letterfooter={{
                                         html: `
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
                                         <div>
                                             <p>Tanggal: ${new Date().toLocaleDateString()}</p>
                                             <br>

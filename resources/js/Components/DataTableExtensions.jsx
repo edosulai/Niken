@@ -32,7 +32,6 @@ const DataTableExtensions = ({
     };
 
     useEffect(() => {
-        // column properties and select fields to export
         columns.forEach((element) => {
             if (element["export"] !== false) {
                 raw.header.push(element);
@@ -83,19 +82,6 @@ const DataTableExtensions = ({
         const table = ExportUtil.print(raw.data, raw.header, letterhead, letterfooter);
         Utilities.print(table);
     };
-
-    const checkHeader = () => {
-        if (columns.length !== raw.header.length) {
-            raw.header = [];
-            columns.forEach((element) => {
-                if (element["export"] !== false) {
-                    raw.header.push(element);
-                }
-            });
-        }
-    };
-
-    checkHeader();
 
     return (
         <>
