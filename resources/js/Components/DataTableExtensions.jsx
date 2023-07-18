@@ -1,165 +1,129 @@
-import React, { Component, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import ExportData from "@/Utils/Export";
+import ExportUtil from "@/Utils/Export";
 import Utilities from "@/Utils/Utilities";
+import Export from "@/Components/Export";
 import Filter from "@/Components/Filter";
-import Export from "@/Components/ExportComponent";
 import Print from "@/Components/Print";
 
-class DataTableExtensions extends Component {
-    constructor(props) {
-        super(props);
-        const { columns, data, filterDigit } = props;
-        this.state = {
-            dropdown: false,
-            columns: columns,
-            data: data,
-            constData: data,
-            filter: "",
-            filterDigit: filterDigit
-        };
-        this.raw = {
-            header: [],
-            data: []
-        };
-    }
+const DataTableExtensions = ({
+    columns,
+    data,
+    filterDigit,
+    filterPlaceholder,
+    exportHeaders,
+    fileName,
+    filterHidden,
+    children,
+    filter = true,
+    export: exportOption = true,
+    print = true,
+    letterhead,
+    letterfooter
+}) => {
+    const [dropdown, setDropdown] = useState(false);
+    const [constData, setConstData] = useState(data);
+    const [filterValue, setFilterValue] = useState("");
+    const [filteredData, setFilteredData] = useState(data);
 
-    componentDidMount() {
-        const { columns } = this.state;
-        columns.forEach(element => {
-            if (element.export !== false) {
-                this.raw.header.push(element);
+    const raw = {
+        header: [],
+        data: []
+    };
+
+    useEffect(() => {
+        // column properties and select fields to export
+        columns.forEach((element) => {
+            if (element["export"] !== false) {
+                raw.header.push(element);
             }
         });
-    }
+    }, [columns]);
 
-    componentDidUpdate(prevProps) {
-        const { columns, data, filterDigit } = this.props;
-        const { filter } = this.state;
+    useEffect(() => {
+        setFilteredData(constData);
+        setFilterValue("");
+    }, [data]);
 
-        if (prevProps.columns !== columns || prevProps.data !== data) {
-            this.setState(
-                {
-                    columns: columns,
-                    data: data,
-                    filterDigit: filterDigit,
-                    constData: data
-                },
-                () => {
-                    this.checkHeader();
+    const onDataRender = () => {
+        raw.data = Utilities.dataRender(constData, raw.header);
+    };
 
-                    if (filter.length > filterDigit) {
-                        this.onFilter(filter);
-                    }
-                }
-            );
-        }
-    }
-
-    onDataRender() {
-        const { constData } = this.state;
-        this.raw.data = Utilities.dataRender(constData, this.raw.header);
-    }
-
-    onExport(e, type) {
-        this.onDataRender();
-        const { exportHeaders, fileName } = this.props;
-        const { data, header } = this.raw;
-
-        const exportData = ExportData[type](data, exportHeaders ? header : null, fileName);
+    const onExport = (e, type) => {
+        onDataRender();
+        const exportData = ExportUtil[type](
+            raw.data,
+            exportHeaders ? raw.header : null,
+            fileName
+        );
 
         Utilities.download(exportData);
 
-        this.setState({
-            dropdown: false
-        });
-
+        setDropdown(false);
         e.preventDefault();
-    }
+    };
 
-    onFilter(text) {
+    const onFilter = (text) => {
         const value = Utilities.lower(text);
-        const { constData, filterDigit } = this.state;
-        const { filterHidden } = this.props;
-        let filtered = constData;
+        setFilterValue(value);
 
+        let filtered = constData;
         if (value.length > filterDigit) {
             if (!filterHidden) {
-                this.onDataRender();
+                onDataRender();
             }
-
-            filtered = Utilities.filter(value, constData, this.raw.data, filterHidden);
+            filtered = Utilities.filter(value, constData, raw.data, filterHidden);
         }
 
-        this.setState({
-            data: filtered,
-            filter: value
-        });
-    }
+        setFilteredData(filtered);
+    };
 
-    onPrint() {
-        this.onDataRender();
-        const { data, header } = this.raw;
-
-        const table = ExportData.print(data, header);
-
+    const onPrint = () => {
+        onDataRender();
+        const table = ExportUtil.print(raw.data, raw.header, letterhead, letterfooter);
         Utilities.print(table);
-    }
+    };
 
-    checkHeader() {
-        const { columns } = this.state;
-
-        if (columns.length !== this.raw.header.length) {
-            this.raw.header = [];
-            columns.forEach(element => {
-                if (element.export !== false) {
-                    this.raw.header.push(element);
+    const checkHeader = () => {
+        if (columns.length !== raw.header.length) {
+            raw.header = [];
+            columns.forEach((element) => {
+                if (element["export"] !== false) {
+                    raw.header.push(element);
                 }
             });
         }
-    }
+    };
 
-    render() {
-        const { dropdown, columns, data } = this.state;
-        const {
-            filter,
-            print,
-            children,
-            filterPlaceholder
-        } = this.props;
+    checkHeader();
 
-        return (
-            <Fragment>
-                <div className="data-table-extensions">
-                    {filter && (
-                        <Filter
-                            onChange={e => this.onFilter(e.target.value)}
-                            placeholder={filterPlaceholder}
+    return (
+        <>
+            <div className="data-table-extensions">
+                {filter && (
+                    <Filter
+                        onChange={(e) => onFilter(e.target.value)}
+                        placeholder={filterPlaceholder}
+                    />
+                )}
+                <div className="data-table-extensions-action">
+                    {exportOption && (
+                        <Export
+                            className={dropdown ? "drop" : ""}
+                            onDropdown={() => setDropdown((prevState) => !prevState)}
+                            onClick={(e, type) => onExport(e, type)}
                         />
                     )}
-                    <div className="data-table-extensions-action">
-                        {this.props.export && (
-                            <Export
-                                className={dropdown ? "drop" : ""}
-                                onDropdown={() =>
-                                    this.setState(prevState => ({
-                                        dropdown: !prevState.dropdown
-                                    }))
-                                }
-                                onClick={(e, type) => this.onExport(e, type)}
-                            />
-                        )}
-                        {print && <Print onClick={() => this.onPrint()} />}
-                    </div>
+                    {print && <Print onClick={onPrint} />}
                 </div>
-                {React.cloneElement(children, {
-                    columns: columns,
-                    data: data
-                })}
-            </Fragment>
-        );
-    }
-}
+            </div>
+            {React.cloneElement(children, {
+                columns,
+                data: filteredData
+            })}
+        </>
+    );
+};
 
 DataTableExtensions.propTypes = {
     columns: PropTypes.array,
@@ -172,7 +136,9 @@ DataTableExtensions.propTypes = {
     children: PropTypes.node,
     filterHidden: PropTypes.bool,
     filterDigit: PropTypes.number,
-    fileName: PropTypes.string
+    fileName: PropTypes.string,
+    letterhead: PropTypes.object,
+    letterfooter: PropTypes.object,
 };
 
 DataTableExtensions.defaultProps = {
@@ -186,7 +152,9 @@ DataTableExtensions.defaultProps = {
     filterHidden: true,
     filterPlaceholder: "Filter Table",
     filterDigit: 2,
-    fileName: document.title
+    fileName: document.title,
+    letterhead: null,
+    letterfooter: null,
 };
 
 export default DataTableExtensions;

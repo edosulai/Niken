@@ -8,6 +8,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import RangeInput from "@/Components/RangeInput";
 import SwitchInput from "@/Components/SwitchInput";
 import DataTable from "react-data-table-component";
+import DataTableExtensions from "@/Components/DataTableExtensions";
 // import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 export default function Form({ auth, status, title, employers, asset_url }) {
@@ -1074,8 +1075,7 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                     <div className="mx-auto sm:px-6 lg:px-8">
                         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 text-gray-900">
-                                <DataTable
-                                    title="Hasil Akhir"
+                                <DataTableExtensions
                                     columns={[
                                         {
                                             name: "Alternatif",
@@ -1086,6 +1086,7 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                                     A{row.no} <b>{row.nama}</b>
                                                 </span>
                                             ),
+                                            cellExport: (row) => `A${row.no} ${row.nama}`,
                                             sortable: true,
                                             width: "208px",
                                         },
@@ -1099,6 +1100,7 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                                     {row.result.toFixed(6)}
                                                 </b>
                                             ),
+                                            cellExport: (row) => row.result.toFixed(6),
                                             width: "160px",
                                         },
                                         {
@@ -1186,12 +1188,46 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                                 _.sum(dataVectors),
                                         };
                                     })}
-                                    pagination={true}
-                                    dense={true}
-                                    highlightOnHover={true}
-                                    striped={true}
-                                    responsive={true}
-                                />
+                                    exportHeaders
+                                    letterhead={{
+                                        html: `
+                                        <h1>PT PERKEBUNAN NUSANTARA VI</h1>
+                                        <p>Kantor Pusat: Jl. Lingkar Barat Paal X Kota Baru, Jambi Kode Pos 36128</p>
+                                        <p>Tlp. +62 741 445603 Fax. +62 741 445500</p>
+                                        <a href="mailto:sekretariat.pn6@gmail.com">sekretariat.pn6@gmail.com</a>
+                                        `,
+                                        css: {
+                                            textAlign: 'center',
+                                        }
+                                    }}
+                                    letterfooter={{
+                                        html: `
+                                        <div>
+                                            <p>Tanggal: ${new Date().toLocaleDateString()}</p>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <p>(&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp)</p>
+                                        </div>
+                                        `,
+                                        css: {
+                                            textAlign: 'right',
+                                        }
+                                    }}
+                                >
+                                    <DataTable
+                                        title="Hasil Akhir"
+                                        pagination={true}
+                                        dense={true}
+                                        highlightOnHover={true}
+                                        striped={true}
+                                        responsive={true}
+                                    />
+                                </DataTableExtensions>
                             </div>
                         </div>
                     </div>

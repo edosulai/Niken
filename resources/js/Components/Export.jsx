@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const ExportComponent = ({ className, onDropdown, onClick }) => {
+const Export = ({ className, onDropdown, onClick }) => {
   return (
     <>
       <button
@@ -21,16 +21,16 @@ const ExportComponent = ({ className, onDropdown, onClick }) => {
   );
 };
 
-ExportComponent.propTypes = {
+Export.propTypes = {
   className: PropTypes.string,
   onDropdown: PropTypes.func,
   onClick: PropTypes.func,
 };
 
-ExportComponent.defaultProps = {
+Export.defaultProps = {
   className: "",
   onDropdown: null,
   onClick: null,
 };
 
-export default ExportComponent;
+export default Export;

@@ -1,3 +1,5 @@
+import { createRoot } from 'react-dom/client';
+
 const download = (props) => {
     const { content, type, name } = props;
     const file = new Blob(["\uFEFF", content], { type });
@@ -14,7 +16,6 @@ const print = (table) => {
     const printWindow = window.open();
     printWindow.document.write(table);
     printWindow.print();
-    printWindow.close();
 };
 
 const lower = (value) => {
@@ -30,14 +31,18 @@ const objectValues = (item) => {
 const filter = (search, constant, data, filterHidden) => {
     return constant.filter((item, index) => {
         const value = (filterHidden ? objectValues(item) : Object.values(data[index])).join();
-        const searchSplit = search.split(' ').filter((filterItem) => filterItem !== '');
-        return searchSplit.filter((filterItem) => lower(value).indexOf(filterItem.trim()) !== -1).length === searchSplit.length;
+        const searchSplit = search.split(' ').filter((filterItem) => {
+            return filterItem !== '';
+        });
+        return searchSplit.filter((filterItem) => {
+            return lower(value).indexOf(filterItem.trim()) !== -1;
+        }).length === searchSplit.length;
     });
 };
 
 const getProperty = (row, selector, format) => {
     if (typeof selector !== 'string') {
-        throw new Error('selector must be a . delimted string eg (my.property)');
+        throw new Error('selector must be a . delimited string eg (my.property)');
     }
 
     if (format && typeof format === 'function') {
@@ -67,15 +72,7 @@ const dataRender = (data, header) => {
         const row = [];
         header.forEach((head) => {
             if (head.cellExport) {
-                const exportData = head.cellExport(element);
-                row.push(exportData);
-            } else if (head.cell) {
-                const div = document.createElement('div');
-                head.cell(element);
-                row.push(div.innerText);
-                div.remove();
-            } else {
-                row.push(getProperty(element, head.selector, head.format));
+                row.push(head.cellExport(element));
             }
         });
         rawData.push(row);
@@ -88,7 +85,9 @@ const concat = {
         const items = [];
         row.forEach((item) => {
             if (typeof item === 'object' && item !== null) {
-                items.push(Object.keys(item).map((key) => `${key}: ${item[key]}`).join(';'));
+                items.push(Object.keys(item).map((key) => {
+                    return `${key}: ${item[key]}`;
+                }).join(';'));
             } else {
                 items.push(item);
             }
@@ -99,7 +98,9 @@ const concat = {
         const items = [];
         row.forEach((item) => {
             if (typeof item === 'object' && item !== null) {
-                items.push(`<table><tbody>${Object.keys(item).map((key) => `<tr><td>${key}</td><td>${item[key]}</td></tr>`).join('')}</tbody></table>`);
+                items.push(`<table><tbody>${Object.keys(item).map((key) => {
+                    return `<tr><td>${key}</td><td>${item[key]}</td></tr>`;
+                }).join('')}</tbody></table>`);
             } else {
                 items.push(item);
             }

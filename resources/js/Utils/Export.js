@@ -11,7 +11,7 @@ const csv = (data, header, fileName) => {
 };
 
 const excel = (data, header, fileName) => {
-    const contentHeader = header ? `<thead><tr><td>${header.map(e => e.name).join('</td><td>')}</td><tr></thead>` : '';
+    const contentHeader = header ? `<thead><tr><td>${header.filter(e => e.cellExport).map(e => e.name).join('</td><td>')}</td><tr></thead>` : '';
     const contentBody = data.map(e => Utilities.concat.excel(e));
     const content = `<table>${contentHeader}<tbody>${contentBody.join('')}</tbody></table>`;
     return {
@@ -21,22 +21,43 @@ const excel = (data, header, fileName) => {
     };
 };
 
-const print = (data, header) => {
+const print = (data, header, letterhead, letterfooter) => {
     const { content } = excel(data, header);
-    const style = `
-      body, table {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-        font-size: 12px;
-      }
-      table {
-        width: 100%;
-      }
-      thead {
-        font-weight: bold;
-      }
+    const style = {
+        body: {
+            fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
+            fontSize: '12px',
+        },
+        table: {
+            width: '100%',
+        },
+        thead: {
+            fontWeight: 'bold',
+        },
+        ".letterhead": {
+            ...(letterhead ? letterhead.css : null),
+        },
+        ".letterfooter": {
+            ...(letterfooter ? letterfooter.css : null),
+        },
+    };
+
+    const styleString = Object.entries(style)
+        .map(([selector, properties]) => `${selector} { ${Object.entries(properties)
+            .map(([property, value]) => `${property.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)}: ${value};`)
+            .join(' ')} }`
+        )
+        .join(' ');
+
+    return `
+        <style>${styleString}</style>
+        ${letterhead ? `<div class="letterhead">${letterhead.html}</div>` : ''}
+        ${content}
+        ${letterfooter ? `<div class="letterfooter">${letterfooter.html}</div>` : ''}
     `;
-    return `<style>${style}</style>${content}`;
 };
+
+
 
 const ExportMethod = {
     csv,
