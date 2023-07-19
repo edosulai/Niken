@@ -1194,7 +1194,8 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                     })}
                                     letterhead={{
                                         html: `
-                                        <h1>PT PERKEBUNAN NUSANTARA VI</h1>
+                                        <h1>LAPORAN HASIL PENCARIAN KARYAWAN TERBAIK BAGIAN PABRIK TAHUN 2023</h1>
+                                        <h2>PT PERKEBUNAN NUSANTARA VI</h2>
                                         <p>Kantor Pusat: Jl. Lingkar Barat Paal X Kota Baru, Jambi Kode Pos 36128</p>
                                         <p>Tlp. +62 741 445603 Fax. +62 741 445500</p>
                                         <a href="mailto:sekretariat.pn6@gmail.com">sekretariat.pn6@gmail.com</a>
@@ -1219,6 +1220,7 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                         <br>
                                         <div>
                                             <p>Tanggal: ${new Date().toLocaleDateString()}</p>
+                                            <p>Pimpinan</p>
                                             <br>
                                             <br>
                                             <br>
@@ -1226,7 +1228,7 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                             <br>
                                             <br>
                                             <br>
-                                            <p>(&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp)</p>
+                                            <p>(Waluyo)</p>
                                         </div>
                                         `,
                                         css: {
