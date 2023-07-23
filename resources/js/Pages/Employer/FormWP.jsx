@@ -1166,15 +1166,13 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                                         ? -1
                                                         : 1),
                                             },
-                                        ]
-                                            .map((x) =>
-                                                Math.pow(x.k_value, x.pangkat)
-                                            )
-                                            .reduce(
-                                                (product, value) =>
-                                                    product * value,
-                                                1
-                                            );
+                                        ].map((x) =>
+                                            Math.pow(x.k_value, x.pangkat)
+                                        ).reduce(
+                                            (product, value) =>
+                                                product * value,
+                                            1
+                                        );
 
                                         return {
                                             alternatif: {
@@ -1191,7 +1189,7 @@ export default function Form({ auth, status, title, employers, asset_url }) {
                                             },
 
                                         };
-                                    })}
+                                    }).sort((a, b) => b.result - a.result)}
                                     letterhead={{
                                         html: `
                                         <h1>LAPORAN HASIL PENCARIAN KARYAWAN TERBAIK BAGIAN PABRIK TAHUN 2023</h1>
