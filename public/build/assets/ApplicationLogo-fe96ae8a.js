@@ -1,0 +1,1 @@
+import{r as e,a as o}from"./app-f9dca88b.js";const r=e.createContext(),n=r;function a(t){const{helpers:s,setHelpers:c}=e.useContext(n);return s.assetUrl+t}function l({className:t}){return o("img",{className:t,src:a("storage/images/logo.jpg"),alt:"",srcset:""})}export{l as A,n as H};

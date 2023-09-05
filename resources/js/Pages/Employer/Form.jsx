@@ -1,17 +1,16 @@
-import moment from "moment";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
-import PrimaryButton from "@/Components/PrimaryButton";
-import SelectInput from "@/Components/SelectInput";
-import Modal from "@/Components/Modal";
-import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";
 import DateInput from "@/Components/DateInput";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import PrimaryButton from "@/Components/PrimaryButton";
 import SearchInput from "@/Components/SearchInput";
+import SecondaryButton from "@/Components/SecondaryButton";
+import SelectInput from "@/Components/SelectInput";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, useForm } from "@inertiajs/react";
+import moment from "moment";
+import { useEffect, useState } from "react";
 
 export default function Form({
     auth,
@@ -19,7 +18,7 @@ export default function Form({
     title,
     terpilih = null,
     employers,
-    asset_url,
+    assetUrl,
 }) {
     const [confirmingDeletion, setConfirmingDeletion] = useState(false);
 
@@ -98,6 +97,7 @@ export default function Form({
                     {title}
                 </h2>
             }
+            assetUrl={assetUrl}
         >
             <Head title={title} />
 

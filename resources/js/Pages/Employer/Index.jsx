@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/TextInput";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
+import { useState } from "react";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from '../../Components/DataTableExtensions';
-import '../../../css/index.css';
 
+import '../../../css/index.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
-export default function Index({ data, auth, status, asset_url }) {
+export default function Index({ data, auth, status, assetUrl }) {
     const columnsSelector = (cellValue, href) => {
         return (
             auth.user.roles.includes("admin") ? <Link
@@ -204,6 +203,7 @@ export default function Index({ data, auth, status, asset_url }) {
                     </div>}
                 </div>
             }
+            assetUrl={assetUrl}
         >
             <Head title="Karyawan" />
 
